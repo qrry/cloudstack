@@ -16,18 +16,19 @@
 // under the License.
 package org.apache.cloudstack.api.command.user;
 
-import com.cloud.dc.Pod;
+import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.user.Account;
+import org.apache.cloudstack.ControlConstants;
 import org.apache.cloudstack.api.APICommand;
-import org.apache.cloudstack.api.ApiConstants;
 import org.apache.cloudstack.api.ApiErrorCode;
 import org.apache.cloudstack.api.BaseCmd;
 import org.apache.cloudstack.api.Parameter;
 import org.apache.cloudstack.api.ServerApiException;
-import org.apache.cloudstack.api.response.PodResponse;
-import org.apache.cloudstack.api.response.ZoneResponse;
 import org.apache.cloudstack.api.response.AppStoreResponse;
+import org.apache.cloudstack.control.ApiControlAppStoreService;
 import org.apache.log4j.Logger;
+
+import javax.inject.Inject;
 
 @APICommand(name = "createAppStore", description = "Creates a new AppStore.", responseObject = AppStoreResponse.class,
         requestHasSensitiveInfo = false, responseHasSensitiveInfo = false)
@@ -36,64 +37,57 @@ public class CreateAppStoreCmd extends BaseCmd {
 
     private static final String s_name = "createAppStoreResponse";
 
+    @Inject
+    ApiControlAppStoreService _apiControlAppStoreService;
+
     /////////////////////////////////////////////////////
     //////////////// API parameters /////////////////////
     /////////////////////////////////////////////////////
-    @Parameter(name = ApiConstants.NAME, type = CommandType.STRING, required = true, description = "the name of the Pod")
-    private String podName;
 
-    @Parameter(name = ApiConstants.ZONE_ID,
-               type = CommandType.UUID,
-               entityType = ZoneResponse.class,
-               required = true,
-               description = "the Zone ID in which the Pod will be created")
-    private Long zoneId;
+    @Parameter(name = ControlConstants.AppStore.NAME, type = CommandType.STRING, required = true, description = "应用名称")
+    private String name;
 
-    @Parameter(name = ApiConstants.START_IP, type = CommandType.STRING, required = true, description = "the starting IP address for the Pod")
-    private String startIp;
+    @Parameter(name = ControlConstants.AppStore.DESCRIPTION, type = CommandType.STRING,  description = "应用商店应用描述")
+    private String description;
 
-    @Parameter(name = ApiConstants.END_IP, type = CommandType.STRING, description = "the ending IP address for the Pod")
-    private String endIp;
+    @Parameter(name = ControlConstants.AppStore.ICON, type = CommandType.STRING, required = true, description = "应用商店应用图标")
+    private String icon;
 
-    @Parameter(name = ApiConstants.NETMASK, type = CommandType.STRING, required = true, description = "the netmask for the Pod")
-    private String netmask;
+    @Parameter(name = ControlConstants.AppStore.RUN_SCRIPT, type = CommandType.STRING,  description = "应用商店应用默认执行脚本")
+    private String runScript;
 
-    @Parameter(name = ApiConstants.GATEWAY, type = CommandType.STRING, required = true, description = "the gateway for the Pod")
-    private String gateway;
+    @Parameter(name = ControlConstants.AppStore.STATE, type = CommandType.INTEGER, description = "应用商店应用状态")
+    private int state;
 
-    @Parameter(name = ApiConstants.ALLOCATION_STATE, type = CommandType.STRING, description = "Allocation state of this Pod for allocation of new resources")
-    private String allocationState;
+    @Parameter(name = ControlConstants.AppStore.REMARK, type = CommandType.STRING, description = "应用商店应用备注")
+    private String remark;
 
     /////////////////////////////////////////////////////
     /////////////////// Accessors ///////////////////////
     /////////////////////////////////////////////////////
 
-    public String getNetmask() {
-        return netmask;
+    public String getName() {
+        return name;
     }
 
-    public String getEndIp() {
-        return endIp;
+    public String getDescription() {
+        return description;
     }
 
-    public String getGateway() {
-        return gateway;
+    public String getIcon() {
+        return icon;
     }
 
-    public String getPodName() {
-        return podName;
+    public String getRunScript() {
+        return runScript;
     }
 
-    public String getStartIp() {
-        return startIp;
+    public int getState() {
+        return state;
     }
 
-    public Long getZoneId() {
-        return zoneId;
-    }
-
-    public String getAllocationState() {
-        return allocationState;
+    public String getRemark() {
+        return remark;
     }
 
     /////////////////////////////////////////////////////
@@ -112,13 +106,30 @@ public class CreateAppStoreCmd extends BaseCmd {
 
     @Override
     public void execute() {
-        Pod result = _configService.createPod(getZoneId(), getPodName(), getStartIp(), getEndIp(), getGateway(), getNetmask(), getAllocationState());
+        ControlAppStoreVO result = _apiControlAppStoreService.createAppStore(getName(), getDescription(), getIcon(), getRunScript(), getState(), getRemark());
         if (result != null) {
-            PodResponse response = _responseGenerator.createPodResponse(result, false);
+            AppStoreResponse response = new AppStoreResponse();
+            response.setId(result.getId());
+            response.setName(result.getName());
+            response.setUuid(result.getUuid());
+            response.setDescription(result.getDescription());
+            response.setIcon(result.getIcon());
+            response.setRunScript(result.getRunScript());
+            response.setInstanceCount(result.getInstanceCount());
+            response.setRemoved(result.getRemoved());
+            response.setOwner(result.getOwner());
+            response.setLastUpdated(result.getLastUpdated());
+            response.setState(result.getState());
+            response.setRemark(result.getRemark());
+
+            //设置返回对象的Key
+            response.setObjectName("appStore");
+            //设置返回Response对象的Key
             response.setResponseName(getCommandName());
+
             this.setResponseObject(response);
         } else {
-            throw new ServerApiException(ApiErrorCode.INTERNAL_ERROR, "Failed to create pod");
+            throw new ServerApiException(ApiErrorCode.INTERNAL_ERROR, "创建应用失败");
         }
     }
 }

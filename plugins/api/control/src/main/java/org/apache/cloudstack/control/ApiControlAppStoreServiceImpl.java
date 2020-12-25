@@ -19,9 +19,11 @@ package org.apache.cloudstack.control;
 import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.dc.dao.ControlAppStoreDao;
 import com.cloud.utils.Pair;
+import com.cloud.utils.db.DB;
 import com.cloud.utils.db.Filter;
 import com.cloud.utils.db.SearchBuilder;
 import com.cloud.utils.db.SearchCriteria;
+import org.apache.cloudstack.api.command.user.CreateAppStoreCmd;
 import org.apache.cloudstack.api.command.user.ListAppStoreCmd;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class ApiControlAppStoreServiceImpl implements ApiControlAppStoreService {
@@ -84,9 +87,28 @@ public class ApiControlAppStoreServiceImpl implements ApiControlAppStoreService 
     }
 
     @Override
+    @DB
+    public ControlAppStoreVO createAppStore(String name, String description, String icon, String runScript, int state, String remark) {
+        ControlAppStoreVO controlAppStoreVO = new ControlAppStoreVO();
+        controlAppStoreVO.setName(name);
+        controlAppStoreVO.setDescription(description);
+        controlAppStoreVO.setIcon(icon);
+        controlAppStoreVO.setRunScript(runScript);
+        controlAppStoreVO.setState(state);
+        controlAppStoreVO.setRemark(remark);
+
+        controlAppStoreVO.setUuid(UUID.randomUUID().toString().replaceAll("-",""));
+
+        _controlAppStoreDao.persist(controlAppStoreVO);
+
+        return controlAppStoreVO;
+    }
+
+    @Override
     public List<Class<?>> getCommands() {
         final List<Class<?>> cmdList = new ArrayList<Class<?>>();
         cmdList.add(ListAppStoreCmd.class);
+        cmdList.add(CreateAppStoreCmd.class);
         return cmdList;
     }
 

@@ -25,4 +25,6 @@ import java.util.List;
 
 public interface ApiControlAppStoreService extends PluggableService {
     Pair<List<? extends ControlAppStoreVO>, Integer> listAppStores(ListAppStoreCmd cmd);
+
+    ControlAppStoreVO createAppStore(String name, String description, String icon, String runScript, int state, String remark);
 }
