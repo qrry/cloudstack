@@ -60,6 +60,9 @@ public class ListAppStoreCmd extends BaseListCmd {
     @Parameter(name = ControlConstants.AppStore.UUID, type = CommandType.UUID, entityType = AppStoreResponse.class, description = "应用商店应用UUID")
     private Long uuid;
 
+    @Parameter(name = ControlConstants.AppStore.DESCRIPTION, type = CommandType.STRING,  description = "应用商店应用描述")
+    private String description;
+
     @Parameter(name = ControlConstants.AppStore.STATE, type = CommandType.STRING, description = "应用商店应用状态")
     private String state;
 
@@ -77,6 +80,8 @@ public class ListAppStoreCmd extends BaseListCmd {
     public Long getUuid() {
         return uuid;
     }
+
+    public String getDescription() { return description; }
 
     public String getState() {
         return state;

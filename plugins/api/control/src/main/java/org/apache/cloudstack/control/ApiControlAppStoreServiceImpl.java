@@ -46,6 +46,7 @@ public class ApiControlAppStoreServiceImpl implements ApiControlAppStoreService 
         final Long id = cmd.getId();
         final String name = cmd.getName();
         final Long uuid = cmd.getUuid();
+        final String description = cmd.getDescription();
         final String state = cmd.getState();
 
         final Filter searchFilter = new Filter(ControlAppStoreVO.class, "id", true, cmd.getStartIndex(), cmd.getPageSizeVal());
@@ -53,6 +54,7 @@ public class ApiControlAppStoreServiceImpl implements ApiControlAppStoreService 
         sb.and("id", sb.entity().getId(), SearchCriteria.Op.EQ);
         sb.and("name", sb.entity().getName(), SearchCriteria.Op.LIKE);
         sb.and("uuid", sb.entity().getUuid(), SearchCriteria.Op.EQ);
+        sb.and("description", sb.entity().getDescription(), SearchCriteria.Op.LIKE);
         sb.and("state", sb.entity().getState(), SearchCriteria.Op.EQ);
 
         final SearchCriteria<ControlAppStoreVO> sc = sb.create();
@@ -67,6 +69,10 @@ public class ApiControlAppStoreServiceImpl implements ApiControlAppStoreService 
 
         if (uuid != null) {
             sc.setParameters("uuid", uuid);
+        }
+
+        if (description != null) {
+            sc.setParameters("description", description);
         }
 
         if (state != null) {
