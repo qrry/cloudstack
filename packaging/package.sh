@@ -88,7 +88,8 @@ function packaging() {
         fi
     fi
 
-    VERSION=$(cd $PWD/../; $MVN org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep --color=none '^[0-9]\.')
+    #VERSION=$(cd $PWD/../; $MVN org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep --color=none '^[0-9]\.')
+    VERSION=4.15.0.0-SNAPSHOT
     REALVER=$(echo "$VERSION" | cut -d '-' -f 1)
 
     if [ -n "$5" ]; then

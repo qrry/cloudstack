@@ -130,6 +130,8 @@
         <module>user-authenticators/plain-text</module>
         <module>user-authenticators/saml2</module>
         <module>user-authenticators/sha256salted</module>
+
+        <module>api/control</module>
    </modules>
     <dependencies>
         <dependency>

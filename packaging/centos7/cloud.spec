@@ -194,7 +194,8 @@ if [ "%{_sim}" == "SIMULATOR" -o "%{_sim}" == "simulator" ] ; then
    FLAGS="$FLAGS -Dsimulator"
 fi
 
-mvn -Psystemvm,developer $FLAGS clean package
+#mvn -Psystemvm,developer $FLAGS clean package
+mvn -Psystemvm,developer $FLAGS clean package -DskipTests
 
 %install
 [ ${RPM_BUILD_ROOT} != "/" ] && rm -rf ${RPM_BUILD_ROOT}

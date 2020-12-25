@@ -198,7 +198,8 @@ known_categories = {
     'UnmanagedInstance': 'Virtual Machine',
     'Rolling': 'Rolling Maintenance',
     'importVsphereStoragePolicies' : 'vSphere storage policies',
-    'listVsphereStoragePolicies' : 'vSphere storage policies'
+    'listVsphereStoragePolicies' : 'vSphere storage policies',
+    'createAppStore' : 'API Control'
 }
 
 
