@@ -39,7 +39,7 @@ public class ControlAppStoreVO {
     private String name = null;
 
     @Column(name = "uuid")
-    private long uuid;
+    private String uuid;
 
     @Column(name = "description")
     private String description;
@@ -88,11 +88,11 @@ public class ControlAppStoreVO {
         this.name = name;
     }
 
-    public long getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(long uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 

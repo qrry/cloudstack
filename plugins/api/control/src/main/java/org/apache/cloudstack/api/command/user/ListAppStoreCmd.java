@@ -117,10 +117,15 @@ public class ListAppStoreCmd extends BaseListCmd {
             appStoreResponse.setState(controlAppStoreVO.getState());
             appStoreResponse.setRemark(controlAppStoreVO.getRemark());
 
+            //设置返回对象列表的Key
+            appStoreResponse.setObjectName("appStore");
+
             appStoreResponses.add(appStoreResponse);
         }
 
         response.setResponses(appStoreResponses, result.second());
+
+        //设置返回Response对象的Key
         response.setResponseName(getCommandName());
         this.setResponseObject(response);
     }

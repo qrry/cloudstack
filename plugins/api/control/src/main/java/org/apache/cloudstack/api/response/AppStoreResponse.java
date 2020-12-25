@@ -16,14 +16,17 @@
 // under the License.
 package org.apache.cloudstack.api.response;
 
+import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.serializer.Param;
 import com.google.gson.annotations.SerializedName;
 import org.apache.cloudstack.ControlConstants;
 import org.apache.cloudstack.api.BaseResponse;
+import org.apache.cloudstack.api.EntityReference;
 
 import java.util.Date;
 
-public class AppStoreResponse extends BaseResponse {
+@EntityReference(value = ControlAppStoreVO.class)
+public class AppStoreResponse extends BaseResponse{
 
     @SerializedName(ControlConstants.AppStore.ID)
     @Param(description = "应用商店ID")
@@ -35,7 +38,7 @@ public class AppStoreResponse extends BaseResponse {
 
     @SerializedName(ControlConstants.AppStore.UUID)
     @Param(description = "应用商店UUID")
-    private long uuid;
+    private String uuid;
 
     @SerializedName(ControlConstants.AppStore.DESCRIPTION)
     @Param(description = "应用商店应用描述")
@@ -93,11 +96,11 @@ public class AppStoreResponse extends BaseResponse {
         this.name = name;
     }
 
-    public long getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(long uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
