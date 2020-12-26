@@ -19,6 +19,7 @@ package org.apache.cloudstack.control;
 import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.utils.Pair;
 import com.cloud.utils.component.PluggableService;
+import org.apache.cloudstack.api.command.admin.DeleteAppStoreCmd;
 import org.apache.cloudstack.api.command.user.ListAppStoreCmd;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface ApiControlAppStoreService extends PluggableService {
     Pair<List<? extends ControlAppStoreVO>, Integer> listAppStores(ListAppStoreCmd cmd);
 
     ControlAppStoreVO createAppStore(String name, String description, String icon, String runScript, int state, String remark);
+
+    boolean deleteAppStore(DeleteAppStoreCmd cmd);
+
+    ControlAppStoreVO editAppStore(Long id, String name, String description, String icon, String runScript, int state, String remark);
 }

@@ -33,11 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @APICommand(name = "listAppStoreApis",
-            responseObject = AppStoreResponse.class,
-            description = "获取应用商店列表",
-            since = "4.15.0",
-            requestHasSensitiveInfo = false,
-            responseHasSensitiveInfo = false,
+        description = "应用商店：获取应用列表",
+        since = "4.15.0",
+        responseObject = AppStoreResponse.class,
+        requestHasSensitiveInfo = false,
+        responseHasSensitiveInfo = false,
         authorized = {RoleType.Admin, RoleType.ResourceAdmin, RoleType.DomainAdmin, RoleType.User})
 public class ListAppStoreCmd extends BaseListCmd {
 

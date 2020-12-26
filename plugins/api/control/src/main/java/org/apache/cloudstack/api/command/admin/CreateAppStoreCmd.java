@@ -14,7 +14,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-package org.apache.cloudstack.api.command.user;
+package org.apache.cloudstack.api.command.admin;
 
 import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.user.Account;
@@ -30,8 +30,12 @@ import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
 
-@APICommand(name = "createAppStore", description = "Creates a new AppStore.", responseObject = AppStoreResponse.class,
-        requestHasSensitiveInfo = false, responseHasSensitiveInfo = false)
+@APICommand(name = "createAppStore",
+        description = "应用商店：新增应用",
+        since = "4.15.0",
+        responseObject = AppStoreResponse.class,
+        requestHasSensitiveInfo = false,
+        responseHasSensitiveInfo = false)
 public class CreateAppStoreCmd extends BaseCmd {
     public static final Logger s_logger = Logger.getLogger(CreateAppStoreCmd.class.getName());
 
@@ -129,7 +133,7 @@ public class CreateAppStoreCmd extends BaseCmd {
 
             this.setResponseObject(response);
         } else {
-            throw new ServerApiException(ApiErrorCode.INTERNAL_ERROR, "创建应用失败");
+            throw new ServerApiException(ApiErrorCode.INTERNAL_ERROR, "应用商店：创建应用失败");
         }
     }
 }

@@ -18,18 +18,23 @@ package org.apache.cloudstack.control;
 
 import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.dc.dao.ControlAppStoreDao;
+import com.cloud.exception.InvalidParameterValueException;
 import com.cloud.utils.Pair;
 import com.cloud.utils.db.DB;
 import com.cloud.utils.db.Filter;
 import com.cloud.utils.db.SearchBuilder;
 import com.cloud.utils.db.SearchCriteria;
-import org.apache.cloudstack.api.command.user.CreateAppStoreCmd;
+import com.cloud.utils.exception.CloudRuntimeException;
+import org.apache.cloudstack.api.command.admin.CreateAppStoreCmd;
+import org.apache.cloudstack.api.command.admin.DeleteAppStoreCmd;
+import org.apache.cloudstack.api.command.admin.UpdateAppStoreCmd;
 import org.apache.cloudstack.api.command.user.ListAppStoreCmd;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -105,10 +110,45 @@ public class ApiControlAppStoreServiceImpl implements ApiControlAppStoreService 
     }
 
     @Override
+    public boolean deleteAppStore(DeleteAppStoreCmd cmd) {
+        final Long id = cmd.getId();
+        if (!_controlAppStoreDao.remove(id)) {
+            throw new CloudRuntimeException("应用商店：删除应用[" + id + "]失败");
+        }
+        return true;
+    }
+
+    @Override
+    public ControlAppStoreVO editAppStore(Long id, String name, String description, String icon, String runScript, int state, String remark) {
+
+        //判断输入的id是否存在？
+        final ControlAppStoreVO controlAppStoreVO = _controlAppStoreDao.findById(id);
+
+        if (controlAppStoreVO == null) {
+            throw new InvalidParameterValueException("不能找到ID=[" + id + "]");
+        }
+
+        controlAppStoreVO.setName(name);
+        controlAppStoreVO.setDescription(description);
+        controlAppStoreVO.setIcon(icon);
+        controlAppStoreVO.setRunScript(runScript);
+        controlAppStoreVO.setState(state);
+        controlAppStoreVO.setRemark(remark);
+
+        controlAppStoreVO.setLastUpdated(new Date());
+
+        _controlAppStoreDao.update(id, controlAppStoreVO);
+
+        return controlAppStoreVO;
+    }
+
+    @Override
     public List<Class<?>> getCommands() {
         final List<Class<?>> cmdList = new ArrayList<Class<?>>();
         cmdList.add(ListAppStoreCmd.class);
         cmdList.add(CreateAppStoreCmd.class);
+        cmdList.add(DeleteAppStoreCmd.class);
+        cmdList.add(UpdateAppStoreCmd.class);
         return cmdList;
     }
 
