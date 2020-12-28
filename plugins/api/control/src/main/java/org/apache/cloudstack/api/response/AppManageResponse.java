@@ -16,7 +16,7 @@
 // under the License.
 package org.apache.cloudstack.api.response;
 
-import com.cloud.dc.ControlAppStoreVO;
+import com.cloud.dc.ControlAppManageVO;
 import com.cloud.serializer.Param;
 import com.google.gson.annotations.SerializedName;
 import org.apache.cloudstack.ControlConstants;
@@ -25,59 +25,55 @@ import org.apache.cloudstack.api.EntityReference;
 
 import java.util.Date;
 
-@EntityReference(value = ControlAppStoreVO.class)
-public class AppStoreResponse extends BaseResponse{
+@EntityReference(value = ControlAppManageVO.class)
+public class AppManageResponse extends BaseResponse{
 
-    @SerializedName(ControlConstants.AppStore.ID)
-    @Param(description = "应用商店ID")
+    @SerializedName(ControlConstants.AppManage.ID)
+    @Param(description = "应用管理ID")
     private long id;
 
-    @SerializedName(ControlConstants.AppStore.NAME)
-    @Param(description = "应用商店应用名称")
-    private String name;
+    @SerializedName(ControlConstants.AppManage.APP_STORE_ID)
+    @Param(description = "应用商店ID")
+    private long appStoreId;
 
-    @SerializedName(ControlConstants.AppStore.UUID)
-    @Param(description = "应用商店UUID")
+    @SerializedName(ControlConstants.AppManage.UUID)
+    @Param(description = "应用管理UUID")
     private String uuid;
 
-    @SerializedName(ControlConstants.AppStore.DESCRIPTION)
-    @Param(description = "应用商店应用描述")
+    @SerializedName(ControlConstants.AppManage.DESCRIPTION)
+    @Param(description = "应用管理应用描述")
     private String description;
 
-    @SerializedName(ControlConstants.AppStore.ICON)
-    @Param(description = "应用商店应用图标")
-    private String icon;
+    @SerializedName(ControlConstants.AppManage.INSTANCE_ID)
+    @Param(description = "应用管理实例ID")
+    private long instanceId;
 
-    @SerializedName(ControlConstants.AppStore.RUN_SCRIPT)
-    @Param(description = "应用商店应用运行脚本")
+    @SerializedName(ControlConstants.AppManage.RUN_SCRIPT)
+    @Param(description = "应用管理应用运行脚本")
     private String runScript;
 
-    @SerializedName(ControlConstants.AppStore.INSTANCE_COUNT)
-    @Param(description = "应用商店应用所属实例数")
-    private int instanceCount;
-
-    @SerializedName(ControlConstants.AppStore.REMOVED)
-    @Param(description = "应用商店应用删除时间")
+    @SerializedName(ControlConstants.AppManage.REMOVED)
+    @Param(description = "应用管理应用删除时间")
     private Date removed;
 
-    @SerializedName(ControlConstants.AppStore.OWNER)
-    @Param(description = "应用商店应用创建人")
+    @SerializedName(ControlConstants.AppManage.OWNER)
+    @Param(description = "应用管理应用创建人")
     private String owner;
 
-    @SerializedName(ControlConstants.AppStore.CREATED)
-    @Param(description = "应用商店应用创建时间")
+    @SerializedName(ControlConstants.AppManage.CREATED)
+    @Param(description = "应用管理应用创建时间")
     private Date created;
 
-    @SerializedName(ControlConstants.AppStore.LAST_UPDATED)
-    @Param(description = "应用商店应用更新时间")
+    @SerializedName(ControlConstants.AppManage.LAST_UPDATED)
+    @Param(description = "应用管理应用更新时间")
     private Date lastUpdated;
 
-    @SerializedName(ControlConstants.AppStore.STATE)
-    @Param(description = "应用商店应用状态")
+    @SerializedName(ControlConstants.AppManage.STATE)
+    @Param(description = "应用管理应用状态")
     private int state;
 
     @SerializedName(ControlConstants.AppStore.REMARK)
-    @Param(description = "应用商店应用备注")
+    @Param(description = "应用管理应用备注")
     private String remark;
 
     public long getId() {
@@ -88,12 +84,12 @@ public class AppStoreResponse extends BaseResponse{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public long getAppStoreId() {
+        return appStoreId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAppStoreId(long appStoreId) {
+        this.appStoreId = appStoreId;
     }
 
     public String getUuid() {
@@ -112,12 +108,12 @@ public class AppStoreResponse extends BaseResponse{
         this.description = description;
     }
 
-    public String getIcon() {
-        return icon;
+    public long getInstanceId() {
+        return instanceId;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setInstanceId(long instanceId) {
+        this.instanceId = instanceId;
     }
 
     public String getRunScript() {
@@ -126,14 +122,6 @@ public class AppStoreResponse extends BaseResponse{
 
     public void setRunScript(String runScript) {
         this.runScript = runScript;
-    }
-
-    public int getInstanceCount() {
-        return instanceCount;
-    }
-
-    public void setInstanceCount(int instanceCount) {
-        this.instanceCount = instanceCount;
     }
 
     public Date getRemoved() {

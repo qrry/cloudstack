@@ -199,7 +199,16 @@ known_categories = {
     'Rolling': 'Rolling Maintenance',
     'importVsphereStoragePolicies' : 'vSphere storage policies',
     'listVsphereStoragePolicies' : 'vSphere storage policies',
-    'createAppStore' : 'API Control'
+    'createAppStore' : 'API Control',
+    'deleteAppStore' : 'API Control',
+    'updateAppStore' : 'API Control',
+    'listAppStore' : 'API Control',
+    'listAppManage' : 'API Control',
+    'createAppManage' : 'API Control',
+    'deleteAppManage' : 'API Control',
+    'updateAppManage' : 'API Control',
+    'installAppManage' : 'API Control',
+    'uninstallAppManage' : 'API Control'
 }
 
 

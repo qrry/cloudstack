@@ -14,70 +14,59 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-package org.apache.cloudstack.api.response;
+package com.cloud.dc;
 
-import com.cloud.dc.ControlAppStoreVO;
-import com.cloud.serializer.Param;
-import com.google.gson.annotations.SerializedName;
-import org.apache.cloudstack.ControlConstants;
-import org.apache.cloudstack.api.BaseResponse;
-import org.apache.cloudstack.api.EntityReference;
+import com.cloud.utils.db.GenericDao;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
-@EntityReference(value = ControlAppStoreVO.class)
-public class AppStoreResponse extends BaseResponse{
+@Entity
+@Table(name = "control_app_manage")
+public class ControlAppManageVO {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
 
-    @SerializedName(ControlConstants.AppStore.ID)
-    @Param(description = "应用商店ID")
-    private long id;
+    @Column(name = "app_store_id")
+    private long appStoreId;
 
-    @SerializedName(ControlConstants.AppStore.NAME)
-    @Param(description = "应用商店应用名称")
-    private String name;
-
-    @SerializedName(ControlConstants.AppStore.UUID)
-    @Param(description = "应用商店UUID")
+    @Column(name = "uuid")
     private String uuid;
 
-    @SerializedName(ControlConstants.AppStore.DESCRIPTION)
-    @Param(description = "应用商店应用描述")
+    @Column(name = "description")
     private String description;
 
-    @SerializedName(ControlConstants.AppStore.ICON)
-    @Param(description = "应用商店应用图标")
-    private String icon;
+    @Column(name = "instance_id")
+    private long instanceId;
 
-    @SerializedName(ControlConstants.AppStore.RUN_SCRIPT)
-    @Param(description = "应用商店应用运行脚本")
+    @Column(name = "run_script")
     private String runScript;
 
-    @SerializedName(ControlConstants.AppStore.INSTANCE_COUNT)
-    @Param(description = "应用商店应用所属实例数")
-    private int instanceCount;
-
-    @SerializedName(ControlConstants.AppStore.REMOVED)
-    @Param(description = "应用商店应用删除时间")
+    @Column(name = GenericDao.REMOVED_COLUMN)
     private Date removed;
 
-    @SerializedName(ControlConstants.AppStore.OWNER)
-    @Param(description = "应用商店应用创建人")
+    @Column(name = "owner")
     private String owner;
 
-    @SerializedName(ControlConstants.AppStore.CREATED)
-    @Param(description = "应用商店应用创建时间")
+    @Column(name = GenericDao.CREATED_COLUMN)
     private Date created;
 
-    @SerializedName(ControlConstants.AppStore.LAST_UPDATED)
-    @Param(description = "应用商店应用更新时间")
+    @Column(name = "last_updated")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 
-    @SerializedName(ControlConstants.AppStore.STATE)
-    @Param(description = "应用商店应用状态")
+    @Column(name = "state")
     private int state;
 
-    @SerializedName(ControlConstants.AppStore.REMARK)
-    @Param(description = "应用商店应用备注")
+    @Column(name = "remark")
     private String remark;
 
     public long getId() {
@@ -88,12 +77,12 @@ public class AppStoreResponse extends BaseResponse{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public long getAppStoreId() {
+        return appStoreId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAppStoreId(long appStoreId) {
+        this.appStoreId = appStoreId;
     }
 
     public String getUuid() {
@@ -112,12 +101,12 @@ public class AppStoreResponse extends BaseResponse{
         this.description = description;
     }
 
-    public String getIcon() {
-        return icon;
+    public long getInstanceId() {
+        return instanceId;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setInstanceId(long instanceId) {
+        this.instanceId = instanceId;
     }
 
     public String getRunScript() {
@@ -126,14 +115,6 @@ public class AppStoreResponse extends BaseResponse{
 
     public void setRunScript(String runScript) {
         this.runScript = runScript;
-    }
-
-    public int getInstanceCount() {
-        return instanceCount;
-    }
-
-    public void setInstanceCount(int instanceCount) {
-        this.instanceCount = instanceCount;
     }
 
     public Date getRemoved() {

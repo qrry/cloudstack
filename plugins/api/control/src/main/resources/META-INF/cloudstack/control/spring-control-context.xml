@@ -26,7 +26,7 @@
                       http://www.springframework.org/schema/context
                       http://www.springframework.org/schema/context/spring-context.xsd"
                       >
-
-      <bean id="apiControlAppStoreServiceImpl" class="org.apache.cloudstack.control.ApiControlAppStoreServiceImpl"/>
+    <bean id="apiControlAppStoreServiceImpl" class="org.apache.cloudstack.control.ApiControlAppStoreServiceImpl"/>
+    <bean id="apiControlAppManageServiceImpl" class="org.apache.cloudstack.control.ApiControlAppManageServiceImpl"/>
     
 </beans>

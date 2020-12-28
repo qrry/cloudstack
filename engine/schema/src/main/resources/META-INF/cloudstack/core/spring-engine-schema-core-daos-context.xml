@@ -299,4 +299,5 @@
   <bean id="UserVmDeployAsIsDetailsDaoImpl" class="com.cloud.deployasis.dao.UserVmDeployAsIsDetailsDaoImpl" />
   <!-- Control Configuration -->
   <bean id="controlAppStoreDaoImpl" class="com.cloud.dc.dao.ControlAppStoreDaoImpl" />
+  <bean id="controlAppManageDaoImpl" class="com.cloud.dc.dao.ControlAppManageDaoImpl" />
 </beans>

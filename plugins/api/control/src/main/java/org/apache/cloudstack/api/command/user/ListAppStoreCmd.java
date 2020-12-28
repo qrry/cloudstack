@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-@APICommand(name = "listAppStoreApis",
+@APICommand(name = "listAppStore",
         description = "应用商店：获取应用列表",
         since = "4.15.0",
         responseObject = AppStoreResponse.class,
