@@ -17,6 +17,7 @@
 package org.apache.cloudstack.api.command.user;
 
 import com.cloud.dc.ControlAppManageVO;
+import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.utils.Pair;
 import org.apache.cloudstack.ControlConstants;
 import org.apache.cloudstack.acl.RoleType;
@@ -111,9 +112,18 @@ public class ListAppManageCmd extends BaseListCmd {
         List<AppManageResponse> appManageResponses = new ArrayList<AppManageResponse>();
         for (ControlAppManageVO controlAppManageVO : result.first()) {
 
+            //获取应用商店数据
+            long appStoreId = controlAppManageVO.getAppStoreId();
+            String appStoreName = "";
+            ControlAppStoreVO controlAppStore = _apiControlAppManageService.findByAppStoreId(appStoreId);
+            if (controlAppStore != null) {
+                appStoreName = controlAppStore.getName();
+            }
+
             AppManageResponse appManageResponse = new AppManageResponse();
             appManageResponse.setId(controlAppManageVO.getId());
-            appManageResponse.setAppStoreId(controlAppManageVO.getAppStoreId());
+            appManageResponse.setAppStoreId(appStoreId);
+            appManageResponse.setAppStoreName(appStoreName);
             appManageResponse.setUuid(controlAppManageVO.getUuid());
             appManageResponse.setDescription(controlAppManageVO.getDescription());
             appManageResponse.setInstanceId(controlAppManageVO.getInstanceId());

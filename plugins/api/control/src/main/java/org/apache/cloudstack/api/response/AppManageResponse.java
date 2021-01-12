@@ -36,6 +36,10 @@ public class AppManageResponse extends BaseResponse{
     @Param(description = "应用商店ID")
     private long appStoreId;
 
+    @SerializedName(ControlConstants.AppManage.APP_STORE_NAME)
+    @Param(description = "应用商店名称")
+    private String appStoreName;
+
     @SerializedName(ControlConstants.AppManage.UUID)
     @Param(description = "应用管理UUID")
     private String uuid;
@@ -90,6 +94,14 @@ public class AppManageResponse extends BaseResponse{
 
     public void setAppStoreId(long appStoreId) {
         this.appStoreId = appStoreId;
+    }
+
+    public String getAppStoreName() {
+        return appStoreName;
+    }
+
+    public void setAppStoreName(String appStoreName) {
+        this.appStoreName = appStoreName;
     }
 
     public String getUuid() {

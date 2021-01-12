@@ -17,7 +17,9 @@
 package org.apache.cloudstack.control;
 
 import com.cloud.dc.ControlAppManageVO;
+import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.dc.dao.ControlAppManageDao;
+import com.cloud.dc.dao.ControlAppStoreDao;
 import com.cloud.exception.InvalidParameterValueException;
 import com.cloud.utils.Pair;
 import com.cloud.utils.db.DB;
@@ -46,6 +48,9 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
 
     @Inject
     private ControlAppManageDao _controlAppManageDao;
+
+    @Inject
+    private ControlAppStoreDao _controlAppStoreDao;
 
     protected ApiControlAppManageServiceImpl() {
         super();
@@ -97,6 +102,12 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
 
         final Pair<List<ControlAppManageVO>, Integer> result = _controlAppManageDao.searchAndCount(sc, searchFilter);
         return new Pair<List<? extends ControlAppManageVO>, Integer>(result.first(), result.second());
+    }
+
+    @Override
+    public ControlAppStoreVO findByAppStoreId(long appStoreId) {
+        ControlAppStoreVO controlAppStoreVO = _controlAppStoreDao.findById(appStoreId);
+        return controlAppStoreVO;
     }
 
     @Override

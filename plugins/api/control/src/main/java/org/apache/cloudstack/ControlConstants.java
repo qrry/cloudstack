@@ -21,6 +21,7 @@ public class ControlConstants {
     public static class AppManage{
         public static final String ID = "id";
         public static final String APP_STORE_ID = "app_store_id";
+        public static final String APP_STORE_NAME = "app_store_name";
         public static final String UUID = "uuid";
         public static final String DESCRIPTION = "description";
         public static final String INSTANCE_ID = "instance_id";

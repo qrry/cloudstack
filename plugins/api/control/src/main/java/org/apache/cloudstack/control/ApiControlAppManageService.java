@@ -17,6 +17,7 @@
 package org.apache.cloudstack.control;
 
 import com.cloud.dc.ControlAppManageVO;
+import com.cloud.dc.ControlAppStoreVO;
 import com.cloud.utils.Pair;
 import com.cloud.utils.component.PluggableService;
 import org.apache.cloudstack.api.command.admin.DeleteAppManageCmd;
@@ -28,6 +29,8 @@ import java.util.List;
 
 public interface ApiControlAppManageService extends PluggableService {
     Pair<List<? extends ControlAppManageVO>, Integer> listAppManages(ListAppManageCmd cmd);
+
+    ControlAppStoreVO findByAppStoreId(long appStoreId);
 
     ControlAppManageVO createAppManage(long appStoreId, String description, long instanceId, String runScript, int state, String remark);
 
