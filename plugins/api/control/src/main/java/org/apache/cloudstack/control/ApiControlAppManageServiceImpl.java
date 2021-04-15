@@ -27,9 +27,13 @@ import com.cloud.utils.db.Filter;
 import com.cloud.utils.db.SearchBuilder;
 import com.cloud.utils.db.SearchCriteria;
 import com.cloud.utils.exception.CloudRuntimeException;
+import net.schmizz.sshj.SSHClient;
+import net.schmizz.sshj.connection.channel.direct.Session;
+import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import org.apache.cloudstack.api.command.admin.CreateAppManageCmd;
 import org.apache.cloudstack.api.command.admin.DeleteAppManageCmd;
 import org.apache.cloudstack.api.command.admin.InstallAppManageCmd;
+import org.apache.cloudstack.api.command.admin.ResetAppManageCmd;
 import org.apache.cloudstack.api.command.admin.UninstallAppManageCmd;
 import org.apache.cloudstack.api.command.admin.UpdateAppManageCmd;
 import org.apache.cloudstack.api.command.user.ListAppManageCmd;
@@ -37,10 +41,12 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class ApiControlAppManageServiceImpl implements ApiControlAppManageService {
@@ -62,7 +68,13 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
         final Long appStoreId = cmd.getAppStoreId();
         final Long uuid = cmd.getUuid();
         final String description = cmd.getDescription();
-        final Long instanceId = cmd.getInstanceId();
+        final String instanceId = cmd.getInstanceId();
+        final String instanceName = cmd.getInstanceName();
+        final String runScript = cmd.getRunScript();
+        final String ip = cmd.getIp();
+        final String port = cmd.getPort();
+        final String loginUser = cmd.getLoginUser();
+        final String loginPassword = cmd.getLoginPassword();
         final String state = cmd.getState();
 
         final Filter searchFilter = new Filter(ControlAppManageVO.class, "id", true, cmd.getStartIndex(), cmd.getPageSizeVal());
@@ -72,6 +84,12 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
         sb.and("uuid", sb.entity().getUuid(), SearchCriteria.Op.EQ);
         sb.and("description", sb.entity().getDescription(), SearchCriteria.Op.LIKE);
         sb.and("instanceId", sb.entity().getInstanceId(), SearchCriteria.Op.EQ);
+        sb.and("instanceName", sb.entity().getInstanceName(), SearchCriteria.Op.LIKE);
+        sb.and("runScript", sb.entity().getRunScript(), SearchCriteria.Op.LIKE);
+        sb.and("ip", sb.entity().getIp(), SearchCriteria.Op.EQ);
+        sb.and("port", sb.entity().getPort(), SearchCriteria.Op.EQ);
+        sb.and("loginUser", sb.entity().getLoginUser(), SearchCriteria.Op.EQ);
+        sb.and("loginPassword", sb.entity().getLoginPassword(), SearchCriteria.Op.EQ);
         sb.and("state", sb.entity().getState(), SearchCriteria.Op.EQ);
 
         final SearchCriteria<ControlAppManageVO> sc = sb.create();
@@ -96,6 +114,30 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
             sc.setParameters("instanceId", instanceId);
         }
 
+        if (instanceName != null) {
+            sc.setParameters("instanceName", instanceName);
+        }
+
+        if (runScript != null) {
+            sc.setParameters("runScript", runScript);
+        }
+
+        if (ip != null) {
+            sc.setParameters("ip", ip);
+        }
+
+        if (port != null) {
+            sc.setParameters("port", port);
+        }
+
+        if (loginUser != null) {
+            sc.setParameters("loginUser", loginUser);
+        }
+
+        if (loginPassword != null) {
+            sc.setParameters("loginPassword", loginPassword);
+        }
+
         if (state != null) {
             sc.setParameters("state", state);
         }
@@ -112,12 +154,19 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
 
     @Override
     @DB
-    public ControlAppManageVO createAppManage(long appStoreId, String description, long instanceId, String runScript, int state, String remark) {
+    public ControlAppManageVO createAppManage(long appStoreId, String description, String instanceId, String instanceName,
+                                              String runScript, String ip, String port, String loginUser,
+                                              String loginPassword, int state, String remark) {
         ControlAppManageVO controlAppManageVO = new ControlAppManageVO();
         controlAppManageVO.setAppStoreId(appStoreId);
         controlAppManageVO.setDescription(description);
         controlAppManageVO.setInstanceId(instanceId);
+        controlAppManageVO.setInstanceName(instanceName);
         controlAppManageVO.setRunScript(runScript);
+        controlAppManageVO.setIp(ip);
+        controlAppManageVO.setPort(port);
+        controlAppManageVO.setLoginUser(loginUser);
+        controlAppManageVO.setLoginPassword(loginPassword);
         controlAppManageVO.setState(state);
         controlAppManageVO.setRemark(remark);
 
@@ -138,7 +187,9 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
     }
 
     @Override
-    public ControlAppManageVO editAppManage(Long id, long appStoreId, String description, long instanceId, String runScript, int state, String remark) {
+    public ControlAppManageVO editAppManage(Long id, long appStoreId, String description, String instanceId, String instanceName,
+                                            String runScript, String ip, String port, String loginUser,
+                                            String loginPassword, int state, String remark) {
 
         //判断输入的id是否存在？
         final ControlAppManageVO controlAppManageVO = _controlAppManageDao.findById(id);
@@ -150,7 +201,12 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
         controlAppManageVO.setAppStoreId(appStoreId);
         controlAppManageVO.setDescription(description);
         controlAppManageVO.setInstanceId(instanceId);
+        controlAppManageVO.setInstanceName(instanceName);
         controlAppManageVO.setRunScript(runScript);
+        controlAppManageVO.setIp(ip);
+        controlAppManageVO.setIp(port);
+        controlAppManageVO.setLoginUser(loginUser);
+        controlAppManageVO.setLoginPassword(loginPassword);
         controlAppManageVO.setState(state);
         controlAppManageVO.setRemark(remark);
 
@@ -162,15 +218,147 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
     }
 
     @Override
-    public boolean installAppManage(InstallAppManageCmd cmd) {
+    public boolean installAppManage(InstallAppManageCmd cmd) throws IOException {
         final Long id = cmd.getId();
-        throw new CloudRuntimeException("应用管理：安装应用[" + id + "]失败");
+        final ControlAppManageVO controlAppManageVO = _controlAppManageDao.findById(id);
+
+        if (controlAppManageVO == null) {
+            throw new InvalidParameterValueException("不能找到ID=[" + id + "]");
+        }
+
+        String ip = controlAppManageVO.getIp();
+
+        int port = 0;
+        try {
+            port = Integer.parseInt(controlAppManageVO.getPort());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new InvalidParameterValueException("端口Port=[" + port + "]不是正确的数字");
+        }
+        String runScript = controlAppManageVO.getRunScript() + "install.sh";
+        String username = controlAppManageVO.getLoginUser();
+        String password = controlAppManageVO.getLoginPassword();
+
+        //调起SSH远程访问服务
+        final SSHClient ssh = new SSHClient();
+        ssh.connect(ip, port);
+        Session session = null;
+        try {
+            ssh.authPassword(username, password);
+            session = ssh.startSession();
+            final Command command = session.exec(runScript);
+            s_logger.info("========================[installAppManage]:IP=[" + ip + "];Port=["
+                    + port + "];Username=[" + username + "];Password=[" + password + "]==========================");
+            command.join(5, TimeUnit.SECONDS);
+        } finally {
+            try {
+                if (session != null) {
+                    session.close();
+                }
+            } catch (IOException e) {
+                // Do Nothing
+                return false;
+            }
+            ssh.disconnect();
+        }
+
+        return true;
     }
 
     @Override
-    public boolean uninstallAppManage(UninstallAppManageCmd cmd) {
+    public boolean uninstallAppManage(UninstallAppManageCmd cmd) throws IOException {
         final Long id = cmd.getId();
-        throw new CloudRuntimeException("应用管理：卸载应用[" + id + "]失败");
+        final ControlAppManageVO controlAppManageVO = _controlAppManageDao.findById(id);
+
+        if (controlAppManageVO == null) {
+            throw new InvalidParameterValueException("不能找到ID=[" + id + "]");
+        }
+
+        String ip = controlAppManageVO.getIp();
+
+        int port = 0;
+        try {
+            port = Integer.parseInt(controlAppManageVO.getPort());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new InvalidParameterValueException("端口Port=[" + port + "]不是正确的数字");
+        }
+        String runScript = controlAppManageVO.getRunScript()  + "unInstall.sh";
+        String username = controlAppManageVO.getLoginUser();
+        String password = controlAppManageVO.getLoginPassword();
+
+        //调起SSH远程访问服务
+        final SSHClient ssh = new SSHClient();
+        ssh.connect(ip, port);
+        Session session = null;
+        try {
+            ssh.authPassword(username, password);
+            session = ssh.startSession();
+            final Command command = session.exec(runScript);
+            s_logger.info("========================[uninstallAppManage]:IP=[" + ip + "];Port=["
+                    + port + "];Username=[" + username + "];Password=[" + password + "]==========================");
+            command.join(5, TimeUnit.SECONDS);
+        } finally {
+            try {
+                if (session != null) {
+                    session.close();
+                }
+            } catch (IOException e) {
+                // Do Nothing
+                return false;
+            }
+            ssh.disconnect();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean resetAppManage(ResetAppManageCmd cmd) throws IOException {
+        final Long id = cmd.getId();
+        final ControlAppManageVO controlAppManageVO = _controlAppManageDao.findById(id);
+
+        if (controlAppManageVO == null) {
+            throw new InvalidParameterValueException("不能找到ID=[" + id + "]");
+        }
+
+        String ip = controlAppManageVO.getIp();
+
+        int port = 0;
+        try {
+            port = Integer.parseInt(controlAppManageVO.getPort());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new InvalidParameterValueException("端口Port=[" + port + "]不是正确的数字");
+        }
+        String runScript = controlAppManageVO.getRunScript() + "reset.sh";
+        String username = controlAppManageVO.getLoginUser();
+        String password = controlAppManageVO.getLoginPassword();
+
+        //调起SSH远程访问服务
+        final SSHClient ssh = new SSHClient();
+        ssh.connect(ip, port);
+        Session session = null;
+        try {
+            ssh.authPassword(username, password);
+            session = ssh.startSession();
+            final Command command = session.exec(runScript);
+            s_logger.info("========================[resetAppManage]:IP=[" + ip + "];Port=["
+                    + port + "];Username=[" + username + "];Password=[" + password + "]==========================");
+            command.join(5, TimeUnit.SECONDS);
+        } finally {
+            try {
+                if (session != null) {
+                    session.close();
+                }
+            } catch (IOException e) {
+                // Do Nothing
+                return false;
+            }
+            ssh.disconnect();
+        }
+
+        return true;
     }
 
     @Override
@@ -182,6 +370,7 @@ public class ApiControlAppManageServiceImpl implements ApiControlAppManageServic
         cmdList.add(UpdateAppManageCmd.class);
         cmdList.add(InstallAppManageCmd.class);
         cmdList.add(UninstallAppManageCmd.class);
+        cmdList.add(ResetAppManageCmd.class);
         return cmdList;
     }
 

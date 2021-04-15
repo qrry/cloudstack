@@ -22,9 +22,11 @@ import com.cloud.utils.Pair;
 import com.cloud.utils.component.PluggableService;
 import org.apache.cloudstack.api.command.admin.DeleteAppManageCmd;
 import org.apache.cloudstack.api.command.admin.InstallAppManageCmd;
+import org.apache.cloudstack.api.command.admin.ResetAppManageCmd;
 import org.apache.cloudstack.api.command.admin.UninstallAppManageCmd;
 import org.apache.cloudstack.api.command.user.ListAppManageCmd;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ApiControlAppManageService extends PluggableService {
@@ -32,13 +34,19 @@ public interface ApiControlAppManageService extends PluggableService {
 
     ControlAppStoreVO findByAppStoreId(long appStoreId);
 
-    ControlAppManageVO createAppManage(long appStoreId, String description, long instanceId, String runScript, int state, String remark);
+    ControlAppManageVO createAppManage(long appStoreId, String description, String instanceId, String instanceName,
+                                       String runScript, String ip, String port, String loginUser, String loginPassword,
+                                       int state, String remark);
 
     boolean deleteAppManage(DeleteAppManageCmd cmd);
 
-    ControlAppManageVO editAppManage(Long id, long appStoreId, String description, long instanceId, String runScript, int state, String remark);
+    ControlAppManageVO editAppManage(Long id, long appStoreId, String description, String instanceId, String instanceName,
+                                     String runScript, String ip, String port, String loginUser, String loginPassword,
+                                     int state, String remark);
 
-    boolean installAppManage(InstallAppManageCmd cmd);
+    boolean installAppManage(InstallAppManageCmd cmd) throws IOException;
 
-    boolean uninstallAppManage(UninstallAppManageCmd cmd);
+    boolean uninstallAppManage(UninstallAppManageCmd cmd) throws IOException;
+
+    boolean resetAppManage(ResetAppManageCmd cmd) throws IOException;
 }

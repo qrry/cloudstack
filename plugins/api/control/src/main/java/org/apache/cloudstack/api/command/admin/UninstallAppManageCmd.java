@@ -29,6 +29,7 @@ import org.apache.cloudstack.control.ApiControlAppManageService;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 @APICommand(name = "uninstallAppManage",
         description = "应用管理：卸载应用",
@@ -75,7 +76,7 @@ public class UninstallAppManageCmd extends BaseCmd {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IOException {
         boolean result = _apiControlAppManageService.uninstallAppManage(this);
         if (result) {
             SuccessResponse response = new SuccessResponse(getCommandName());

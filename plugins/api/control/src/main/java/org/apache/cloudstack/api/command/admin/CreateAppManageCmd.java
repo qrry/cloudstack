@@ -54,11 +54,26 @@ public class CreateAppManageCmd extends BaseCmd {
     @Parameter(name = ControlConstants.AppManage.DESCRIPTION, type = CommandType.STRING,  description = "应用管理应用描述")
     private String description;
 
-    @Parameter(name = ControlConstants.AppManage.INSTANCE_ID, type = CommandType.LONG, required = true, description = "应用管理实例ID")
-    private Long instanceId;
+    @Parameter(name = ControlConstants.AppManage.INSTANCE_ID, type = CommandType.STRING, required = true, description = "应用管理实例ID")
+    private String instanceId;
+
+    @Parameter(name = ControlConstants.AppManage.INSTANCE_NAME, type = CommandType.STRING, required = true, description = "应用管理实例名称")
+    private String instanceName;
 
     @Parameter(name = ControlConstants.AppManage.RUN_SCRIPT, type = CommandType.STRING,  description = "应用管理应用执行脚本")
     private String runScript;
+
+    @Parameter(name = ControlConstants.AppManage.IP, type = CommandType.STRING, required = true, description = "应用管理实例维护IP")
+    private String ip;
+
+    @Parameter(name = ControlConstants.AppManage.PORT, type = CommandType.STRING, required = true, description = "应用管理实例维护端口")
+    private String port;
+
+    @Parameter(name = ControlConstants.AppManage.LOGIN_USER, type = CommandType.STRING,  description = "应用管理实例登录用户名")
+    private String loginUser;
+
+    @Parameter(name = ControlConstants.AppManage.LOGIN_PASSWORD, type = CommandType.STRING,  description = "应用管理实例登录密码")
+    private String loginPassword;
 
     @Parameter(name = ControlConstants.AppManage.STATE, type = CommandType.INTEGER, description = "应用管理应用状态")
     private int state;
@@ -78,12 +93,32 @@ public class CreateAppManageCmd extends BaseCmd {
         return description;
     }
 
-    public Long getInstanceId() {
+    public String getInstanceId() {
         return instanceId;
+    }
+
+    public String getInstanceName() {
+        return instanceName;
     }
 
     public String getRunScript() {
         return runScript;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public String getLoginUser() {
+        return loginUser;
+    }
+
+    public String getLoginPassword() {
+        return loginPassword;
     }
 
     public int getState() {
@@ -110,7 +145,9 @@ public class CreateAppManageCmd extends BaseCmd {
 
     @Override
     public void execute() {
-        ControlAppManageVO result = _apiControlAppManageService.createAppManage(getAppStoreId(), getDescription(), getInstanceId(), getRunScript(), getState(), getRemark());
+        ControlAppManageVO result = _apiControlAppManageService.createAppManage(getAppStoreId(), getDescription(),
+                getInstanceId(), getInstanceName(), getRunScript(), getIp(), getPort(), getLoginUser(),
+                getLoginPassword(), getState(), getRemark());
         if (result != null) {
             AppManageResponse response = new AppManageResponse();
             response.setId(result.getId());
@@ -118,7 +155,12 @@ public class CreateAppManageCmd extends BaseCmd {
             response.setUuid(result.getUuid());
             response.setDescription(result.getDescription());
             response.setInstanceId(result.getInstanceId());
+            response.setInstanceName(result.getInstanceName());
             response.setRunScript(result.getRunScript());
+            response.setIp(result.getIp());
+            response.setPort(result.getPort());
+            response.setLoginUser(result.getLoginUser());
+            response.setLoginPassword(result.getLoginPassword());
             response.setRemoved(result.getRemoved());
             response.setOwner(result.getOwner());
             response.setCreated(result.getCreated());

@@ -31,16 +31,16 @@ import org.apache.log4j.Logger;
 import javax.inject.Inject;
 import java.io.IOException;
 
-@APICommand(name = "installAppManage",
-        description = "应用管理：安装应用",
+@APICommand(name = "resetAppManage",
+        description = "应用管理：重置应用",
         since = "4.15.0",
         responseObject = AppManageResponse.class,
         requestHasSensitiveInfo = false,
         responseHasSensitiveInfo = false)
-public class InstallAppManageCmd extends BaseCmd {
-    public static final Logger s_logger = Logger.getLogger(InstallAppManageCmd.class.getName());
+public class ResetAppManageCmd extends BaseCmd {
+    public static final Logger s_logger = Logger.getLogger(ResetAppManageCmd.class.getName());
 
-    private static final String s_name = "installAppManageResponse";
+    private static final String s_name = "resetAppManageResponse";
 
     @Inject
     ApiControlAppManageService _apiControlAppManageService;
@@ -77,12 +77,12 @@ public class InstallAppManageCmd extends BaseCmd {
 
     @Override
     public void execute() throws IOException {
-        boolean result = _apiControlAppManageService.installAppManage(this);
+        boolean result = _apiControlAppManageService.resetAppManage(this);
         if (result) {
             SuccessResponse response = new SuccessResponse(getCommandName());
             this.setResponseObject(response);
         } else {
-            throw new ServerApiException(ApiErrorCode.INTERNAL_ERROR, "应用管理：安装应用失败");
+            throw new ServerApiException(ApiErrorCode.INTERNAL_ERROR, "应用管理：重置应用失败");
         }
     }
 }

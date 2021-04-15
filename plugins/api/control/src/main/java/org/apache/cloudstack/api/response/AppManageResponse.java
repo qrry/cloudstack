@@ -50,11 +50,31 @@ public class AppManageResponse extends BaseResponse{
 
     @SerializedName(ControlConstants.AppManage.INSTANCE_ID)
     @Param(description = "应用管理实例ID")
-    private long instanceId;
+    private String instanceId;
+
+    @SerializedName(ControlConstants.AppManage.INSTANCE_NAME)
+    @Param(description = "应用管理实例名称")
+    private String instanceName;
 
     @SerializedName(ControlConstants.AppManage.RUN_SCRIPT)
     @Param(description = "应用管理应用运行脚本")
     private String runScript;
+
+    @SerializedName(ControlConstants.AppManage.IP)
+    @Param(description = "应用管理实例维护IP")
+    private String ip;
+
+    @SerializedName(ControlConstants.AppManage.PORT)
+    @Param(description = "应用管理实例维护端口")
+    private String port;
+
+    @SerializedName(ControlConstants.AppManage.LOGIN_USER)
+    @Param(description = "应用管理实例登录用户")
+    private String loginUser;
+
+    @SerializedName(ControlConstants.AppManage.LOGIN_PASSWORD)
+    @Param(description = "应用管理实例登录密码")
+    private String loginPassword;
 
     @SerializedName(ControlConstants.AppManage.REMOVED)
     @Param(description = "应用管理应用删除时间")
@@ -120,12 +140,20 @@ public class AppManageResponse extends BaseResponse{
         this.description = description;
     }
 
-    public long getInstanceId() {
+    public String getInstanceId() {
         return instanceId;
     }
 
-    public void setInstanceId(long instanceId) {
+    public void setInstanceId(String instanceId) {
         this.instanceId = instanceId;
+    }
+
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    public void setInstanceName(String instanceName) {
+        this.instanceName = instanceName;
     }
 
     public String getRunScript() {
@@ -134,6 +162,38 @@ public class AppManageResponse extends BaseResponse{
 
     public void setRunScript(String runScript) {
         this.runScript = runScript;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(String loginUser) {
+        this.loginUser = loginUser;
+    }
+
+    public String getLoginPassword() {
+        return loginPassword;
+    }
+
+    public void setLoginPassword(String loginPassword) {
+        this.loginPassword = loginPassword;
     }
 
     public Date getRemoved() {

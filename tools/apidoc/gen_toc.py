@@ -208,7 +208,8 @@ known_categories = {
     'deleteAppManage' : 'API Control',
     'updateAppManage' : 'API Control',
     'installAppManage' : 'API Control',
-    'uninstallAppManage' : 'API Control'
+    'uninstallAppManage' : 'API Control',
+    'resetAppManage' : 'API Control'
 }
 
 

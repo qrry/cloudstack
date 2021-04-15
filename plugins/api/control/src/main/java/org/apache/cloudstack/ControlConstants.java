@@ -25,7 +25,12 @@ public class ControlConstants {
         public static final String UUID = "uuid";
         public static final String DESCRIPTION = "description";
         public static final String INSTANCE_ID = "instance_id";
+        public static final String INSTANCE_NAME = "instance_name";
         public static final String RUN_SCRIPT = "run_script";
+        public static final String IP = "ip";
+        public static final String PORT = "port";
+        public static final String LOGIN_USER = "login_user";
+        public static final String LOGIN_PASSWORD = "login_password";
         public static final String REMOVED = "removed";
         public static final String OWNER = "owner";
         public static final String CREATED = "created";

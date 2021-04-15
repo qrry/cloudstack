@@ -64,8 +64,26 @@ public class ListAppManageCmd extends BaseListCmd {
     @Parameter(name = ControlConstants.AppManage.DESCRIPTION, type = CommandType.STRING, description = "应用管理应用描述")
     private String description;
 
-    @Parameter(name = ControlConstants.AppManage.INSTANCE_ID, type = CommandType.LONG,  description = "应用管理实例ID")
-    private Long instanceId;
+    @Parameter(name = ControlConstants.AppManage.INSTANCE_ID, type = CommandType.STRING,  description = "应用管理实例ID")
+    private String instanceId;
+
+    @Parameter(name = ControlConstants.AppManage.INSTANCE_NAME, type = CommandType.STRING,  description = "应用管理实例名称")
+    private String instanceName;
+
+    @Parameter(name = ControlConstants.AppManage.RUN_SCRIPT, type = CommandType.STRING,  description = "应用管理应用执行脚本")
+    private String runScript;
+
+    @Parameter(name = ControlConstants.AppManage.IP, type = CommandType.STRING,  description = "应用管理实例管理IP")
+    private String ip;
+
+    @Parameter(name = ControlConstants.AppManage.PORT, type = CommandType.STRING,  description = "应用管理实例管理端口")
+    private String port;
+
+    @Parameter(name = ControlConstants.AppManage.LOGIN_USER, type = CommandType.STRING,  description = "应用管理实例登录用户名")
+    private String loginUser;
+
+    @Parameter(name = ControlConstants.AppManage.LOGIN_PASSWORD, type = CommandType.STRING,  description = "应用管理实例登录密码")
+    private String loginPassword;
 
     @Parameter(name = ControlConstants.AppManage.STATE, type = CommandType.STRING, description = "应用管理应用状态")
     private String state;
@@ -89,8 +107,32 @@ public class ListAppManageCmd extends BaseListCmd {
         return description;
     }
 
-    public Long getInstanceId() {
+    public String getInstanceId() {
         return instanceId;
+    }
+
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    public String getRunScript() {
+        return runScript;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public String getLoginUser() {
+        return loginUser;
+    }
+
+    public String getLoginPassword() {
+        return loginPassword;
     }
 
     public String getState() {
@@ -127,7 +169,12 @@ public class ListAppManageCmd extends BaseListCmd {
             appManageResponse.setUuid(controlAppManageVO.getUuid());
             appManageResponse.setDescription(controlAppManageVO.getDescription());
             appManageResponse.setInstanceId(controlAppManageVO.getInstanceId());
+            appManageResponse.setInstanceName(controlAppManageVO.getInstanceName());
             appManageResponse.setRunScript(controlAppManageVO.getRunScript());
+            appManageResponse.setIp(controlAppManageVO.getIp());
+            appManageResponse.setPort(controlAppManageVO.getPort());
+            appManageResponse.setLoginUser(controlAppManageVO.getLoginUser());
+            appManageResponse.setLoginPassword(controlAppManageVO.getLoginPassword());
             appManageResponse.setRemoved(controlAppManageVO.getRemoved());
             appManageResponse.setOwner(controlAppManageVO.getOwner());
             appManageResponse.setCreated(controlAppManageVO.getCreated());

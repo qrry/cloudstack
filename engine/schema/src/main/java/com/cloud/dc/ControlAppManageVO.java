@@ -45,10 +45,25 @@ public class ControlAppManageVO {
     private String description;
 
     @Column(name = "instance_id")
-    private long instanceId;
+    private String instanceId;
+
+    @Column(name = "instance_name")
+    private String instanceName;
 
     @Column(name = "run_script")
     private String runScript;
+
+    @Column(name = "ip")
+    private String ip;
+
+    @Column(name = "port")
+    private String port;
+
+    @Column(name = "login_user")
+    private String loginUser;
+
+    @Column(name = "login_password")
+    private String loginPassword;
 
     @Column(name = GenericDao.REMOVED_COLUMN)
     private Date removed;
@@ -101,12 +116,20 @@ public class ControlAppManageVO {
         this.description = description;
     }
 
-    public long getInstanceId() {
+    public String getInstanceId() {
         return instanceId;
     }
 
-    public void setInstanceId(long instanceId) {
+    public void setInstanceId(String instanceId) {
         this.instanceId = instanceId;
+    }
+
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    public void setInstanceName(String instanceName) {
+        this.instanceName = instanceName;
     }
 
     public String getRunScript() {
@@ -115,6 +138,38 @@ public class ControlAppManageVO {
 
     public void setRunScript(String runScript) {
         this.runScript = runScript;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(String loginUser) {
+        this.loginUser = loginUser;
+    }
+
+    public String getLoginPassword() {
+        return loginPassword;
+    }
+
+    public void setLoginPassword(String loginPassword) {
+        this.loginPassword = loginPassword;
     }
 
     public Date getRemoved() {
